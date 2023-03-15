@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
-
 const tasks = require('./routes/tasks')
+const connectDB = require('./db/connect')
+//To access the secret variables
+require('dotenv').config()
 
 
 const port = 3000
@@ -22,8 +24,18 @@ app.get('/hello', (req, res)=>{
     res.send("Task Manager App")
 })
 
+//We are gonna start the connection to the DB and only if we succeed we are going to connect to the server
+const start = async () => {
+  try{
+    //we use await because it returns a promise. (Check the .then in connect.js)
+    //We use the secret of the .env
+    await connectDB(process.env.MONGO_URI)
+    app.listen(port, () => {
+      console.log('Server is listening on port 3000....')
+    })
+  }catch (error){
+    console.log(error)
+  }
+}
 
-
-app.listen(port, () => {
-  console.log('Server is listening on port 3000....')
-})
+start()

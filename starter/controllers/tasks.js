@@ -1,20 +1,39 @@
-const getTasks = (req, res) => {
-  res.status(200).json({ success: true, data: "Many Tasks from the file" })
-}
+const Task = require('../models/Task')
 
-const createTask = (req, res) => {
-   const { name } = req.body
-//   if (!name) {
-//     return res
-//       .status(400)
-//       .json({ success: false, msg: 'please provide name value' })
-//   }
-  res.json({success: true, data: req.body})
-}
-
-const getTaskById = (req, res) => {
-    res.status(200).json({ success: true, data: "Get specific Task" })
+const getTasks = async (req, res) => {
+  try{
+    const tasks = await Task.find({})
+    res.status(200).json({tasks})
+  } catch(error){
+    res.status(500).json({msg:error})
   }
+}
+
+const createTask = async (req, res) => {
+  try{
+    const task = await Task.create(req.body)
+    res.status(201).json({task})
+  } catch(error){
+    res.status(500).json({msg:error})
+  }
+
+}
+
+const getTaskById = async (req, res) => {
+  //Get the id and give it the alias taskId
+  try{
+    const { id: taskId } = req.params
+    const task = await Task.findOne({_id: taskId})
+    if(!task){
+      return res.status(404).json({msg: `No task with id ${taskId}`})
+    }
+    res.status(200).json({task})
+
+  } catch(error){
+    res.status(500).json({msg: error})
+  }
+   // res.status(200).json({ success: true, data: "Get specific Task" })
+}
 
 const updateTask = (req, res) => {
 //   const { id } = req.params

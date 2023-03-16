@@ -12,6 +12,9 @@ router.post('/', createTask)
 
 router.get('/:id', getTaskById)
   
+//We use patch because with patch you dont need to send all the params, you can send one param and only that will be updated. 
+//Put replaces the item and if you forget to send a property it just disappears. 
+//You write patch and put exactly the same. But put needs overwrite as a property too. 
 router.patch('/:id', updateTask)
   
 router.delete('/:id', deleteTask)

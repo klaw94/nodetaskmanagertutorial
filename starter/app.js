@@ -7,8 +7,8 @@ const errorHandlerMiddleware = require('./middleware/error-handler')
 //To access the secret variables
 require('dotenv').config()
 
-
-const port = 3000
+//If the port is set use it, otherwise use the 3000
+const port = process.env.PORT || 3000
 
 //static access
 app.use(express.static('./public'))
